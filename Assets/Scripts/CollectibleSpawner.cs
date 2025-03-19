@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CollectibleSpawner : MonoBehaviour
 {
-    public GameObject collectiblePrefab;
+    public GameObject[] collectiblePrefabs;
     public float spawnInterval = 2f;
     public float spawnRadius = 10f;
 
@@ -13,8 +13,9 @@ public class CollectibleSpawner : MonoBehaviour
 
     void SpawnCollectible()
     {
+        GameObject prefabToSpawn = collectiblePrefabs[Random.Range(0, collectiblePrefabs.Length)];
         Vector3 spawnPosition = Random.insideUnitSphere * spawnRadius;
         spawnPosition.y = 0.5f; // Keep collectibles on the ground
-        Instantiate(collectiblePrefab, spawnPosition, Quaternion.identity);
+        Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
     }
 }

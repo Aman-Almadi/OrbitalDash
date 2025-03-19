@@ -2,11 +2,22 @@ using UnityEngine;
 
 public class Collectible : MonoBehaviour
 {
+    public enum CollectibleType {  Score, SpeedBoost }
+    public CollectibleType type;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            GameManager.Instance.IncreaseScore(10);
+            switch (type)
+            {
+                case CollectibleType.Score:
+                    GameManager.Instance.IncreaseScore(10);
+                    break;
+                case CollectibleType.SpeedBoost:
+                    other.GetComponent<PlayerController>().ApplySpeedBoost();
+                    break;
+            }   
             Destroy(gameObject);
         }
     }

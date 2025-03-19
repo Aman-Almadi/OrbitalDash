@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -17,5 +18,18 @@ public class PlayerController : MonoBehaviour
 
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
         rb.AddForce(movement * speed);
+    }
+
+    public void ApplySpeedBoost()
+    {
+        StartCoroutine(SpeedBoostRoutine());
+    }
+
+    private IEnumerator SpeedBoostRoutine()
+    {
+        float originalSpeed = speed;
+        speed *= 2; // Double the speed
+        yield return new WaitForSeconds(5f); // Boost lasts 5 seconds
+        speed = originalSpeed;
     }
 }
