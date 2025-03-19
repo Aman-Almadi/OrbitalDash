@@ -8,6 +8,10 @@ public class GameManager : MonoBehaviour
     private int score = 0;
     public TextMeshProUGUI scoreText;
     public GameObject gameOverPanel;
+    private AudioSource audioSource;
+    public Animator gameOverAnimator;
+    private int highScore;
+    public TextMeshProUGUI highScoreText;
 
     private void Awake()
     {
@@ -19,6 +23,9 @@ public class GameManager : MonoBehaviour
     {
         UpdateScoreUI();
         gameOverPanel.SetActive(false);
+        audioSource = GetComponent<AudioSource>();
+        highScore = PlayerPrefs.GetInt("HighScore", 0);
+        UpdateHighScoreUI();
     }
 
     public void IncreaseScore(int amount)
@@ -29,7 +36,22 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        if (score > highScore)
+        {
+            highScore = score;
+            PlayerPrefs.SetInt("HighScore", highScore);
+            PlayerPrefs.Save();
+        }
+        UpdateHighScoreUI();
         gameOverPanel.SetActive(true);
+        gameOverAnimator.SetTrigger("FadeIn");
+
+        // Play Game Over music
+        if (!audioSource.isPlaying)
+        {
+            audioSource.Play();
+        }
+
         Time.timeScale = 0;
     }
 
@@ -43,5 +65,10 @@ public class GameManager : MonoBehaviour
     private void UpdateScoreUI()
     {
         scoreText.text = "Score: " + score;
+    }
+
+    void UpdateHighScoreUI()
+    {
+        highScoreText.text = "High Score: " + highScore;
     }
 }

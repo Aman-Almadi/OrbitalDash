@@ -6,10 +6,15 @@ public class PlayerController : MonoBehaviour
     public float speed = 10f;
     private Rigidbody rb;
     private bool isShieldActive = false;
+    public AudioClip collectibleSound;
+    public AudioClip shieldSound;
+    public AudioClip slowTimeSound;
+    private AudioSource audioSource;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -58,5 +63,10 @@ public class PlayerController : MonoBehaviour
                 GameManager.Instance.GameOver();
             }
         }
+    }
+
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
 }

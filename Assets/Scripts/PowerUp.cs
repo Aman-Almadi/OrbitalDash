@@ -19,6 +19,7 @@ public class PowerUp : MonoBehaviour
                     Invoke("ResetTimeScale", 5f);
                     break;
             }
+            other.GetComponent<PlayerController>().PlaySound(type == PowerUpType.Shield ? other.GetComponent<PlayerController>().shieldSound : other.GetComponent<PlayerController>().slowTimeSound);
             Destroy(gameObject);
         }
     }

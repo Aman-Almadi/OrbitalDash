@@ -17,7 +17,8 @@ public class Collectible : MonoBehaviour
                 case CollectibleType.SpeedBoost:
                     other.GetComponent<PlayerController>().ApplySpeedBoost();
                     break;
-            }   
+            }
+            other.GetComponent<PlayerController>().PlaySound(other.GetComponent<PlayerController>().collectibleSound);
             Destroy(gameObject);
         }
     }
