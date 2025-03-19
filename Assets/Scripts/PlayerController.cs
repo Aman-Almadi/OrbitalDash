@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 10f;
     private Rigidbody rb;
+    private bool isShieldActive = false;
 
     private void Start()
     {
@@ -31,5 +32,31 @@ public class PlayerController : MonoBehaviour
         speed *= 2; // Double the speed
         yield return new WaitForSeconds(5f); // Boost lasts 5 seconds
         speed = originalSpeed;
+    }
+
+    public void ActivateShield()
+    {
+        isShieldActive = true;
+        Invoke("DeactivateShield", 10f);
+    }
+
+    void DeactivateShield()
+    {
+        isShieldActive = false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            if (isShieldActive)
+            {
+                Destroy(collision.gameObject);
+            }
+            else
+            {
+                GameManager.Instance.GameOver();
+            }
+        }
     }
 }
