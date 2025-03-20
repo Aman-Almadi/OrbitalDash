@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class GameManager : MonoBehaviour
     public Animator gameOverAnimator;
     private int highScore;
     public TextMeshProUGUI highScoreText;
+    public ParticleSystem deathParticles;
+    public GameObject player;
+    public Camera cam;
 
     private void Awake()
     {
@@ -36,21 +40,9 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        if (score > highScore)
-        {
-            highScore = score;
-            PlayerPrefs.SetInt("HighScore", highScore);
-            PlayerPrefs.Save();
-        }
-        UpdateHighScoreUI();
-        gameOverPanel.SetActive(true);
-        gameOverAnimator.SetTrigger("FadeIn");
-
-        // Play Game Over music
-        if (!audioSource.isPlaying)
-        {
-            audioSource.Play();
-        }
+        Instantiate(deathParticles, player.transform.position, Quaternion.identity).gameObject.SetActive(true);
+        CameraShake.Instance.Shake(0.5f, 0.2f);
+        StartCoroutine(PlayGameOverMusicAndEffects());
 
         Time.timeScale = 0;
     }
@@ -70,5 +62,29 @@ public class GameManager : MonoBehaviour
     void UpdateHighScoreUI()
     {
         highScoreText.text = "High Score: " + highScore;
+    }
+
+    private IEnumerator PlayGameOverMusicAndEffects()
+    {
+        gameOverPanel.SetActive(true);
+        gameOverAnimator.SetTrigger("FadeIn");
+
+        // Play Game Over music
+        if (!audioSource.isPlaying)
+        {
+            audioSource.Play();
+        }
+
+        if (score > highScore)
+        {
+            highScore = score;
+            PlayerPrefs.SetInt("HighScore", highScore);
+            PlayerPrefs.Save();
+        }
+
+        UpdateHighScoreUI();
+        cam.GetComponent<CameraZoom>().ZoomOut();
+
+        yield return new WaitForSecondsRealtime(0.5f);
     }
 }
