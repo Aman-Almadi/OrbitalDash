@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 49598ff5c7e6ae349be156d3e2e66352
+timeCreated: 1496443768
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 96589
+  packageName: Emissive Materials Demo with OctaneRender for Unity
+  packageVersion: 1.1
+  assetPath: Assets/Plugins/Octane/octaneShader.shader
+  uploadId: 316592

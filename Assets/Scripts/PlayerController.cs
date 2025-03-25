@@ -11,19 +11,32 @@ public class PlayerController : MonoBehaviour
     public AudioClip slowTimeSound;
     private AudioSource audioSource;
 
+    [SerializeField] private float maxSpeed = 10f;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        float verticalInput = Input.GetAxisRaw("Vertical");
 
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-        rb.AddForce(movement * speed);
+        // Calculate movement direction in the X-Z plane (since it's top-down)
+        Vector3 input = new Vector3(horizontalInput, 0f, verticalInput).normalized;
+
+        // Apply force to move the player
+        rb.AddForce(input * speed, ForceMode.Force);
+
+        // Clamp velocity to prevent excessive speed
+        Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+        if (horizontalVelocity.magnitude > maxSpeed)
+        {
+            horizontalVelocity = horizontalVelocity.normalized * maxSpeed;
+            rb.linearVelocity = new Vector3(horizontalVelocity.x, rb.linearVelocity.y, horizontalVelocity.z);
+        }
     }
 
     public void ApplySpeedBoost()

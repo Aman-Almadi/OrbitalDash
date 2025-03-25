@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 11130e7231fe9274fb29f7459eb763b4
+timeCreated: 1552483246
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 96589
+  packageName: Emissive Materials Demo with OctaneRender for Unity
+  packageVersion: 1.1
+  assetPath: Assets/Plugins/Octane/OctaneBaking.shader
+  uploadId: 316592
